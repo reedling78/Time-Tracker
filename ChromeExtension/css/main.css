@@ -1,0 +1,36 @@
+body {
+	width:650px;
+}
+
+header {
+	background-color: #004b6e;
+	padding:10px;
+	margin-bottom:10px;
+}
+
+.current-count {
+	font-size: 3em;
+}
+
+.big-timer {
+	text-align: center;
+}
+
+.big-timer>h2 {
+	font-size:3.8em;
+	margin-top: 0px;
+}
+
+.panel-footer {
+	text-align:right;
+}
+
+.form-group {
+	margin-bottom:0px;
+}
+
+td:nth-child(2), td:nth-child(3) {
+	width:100px;
+	text-align: right;
+}
+

@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<link rel="stylesheet" href="../../css/libs/bootstrap.min.css" type="text/css">
+		<link rel="stylesheet" href="../../css/main.css" type="text/css">
+		<title></title>
+	</head>
+	<body>
+		<div id="mainPopup">
+			<header>
+				<img src="../../images/logo_50.png" alt="PE Logo">
+			</header>
+			<div class="container">
+				<div class="panel panel-default" context="TimerDisplay">
+					
+					<div class="panel-heading" context="ProjectTitle">
+						Select Project To Time
+					</div>
+					<div class="panel-body">
+						<div class="container">
+							<div class="row">
+								<div class="col-xs-4 big-timer">
+									<h2 context="BigTimer">00:00:00</h2>
+								</div>
+	  							<div class="col-xs-8">
+	  							</div>
+							</div>
+						</div>
+					</div>
+					
+					<table class="table table-condensed" context="projecttable">
+						<script type="text/template" id="TableRow">
+							<td>
+								<%=projectname%>
+							</td>
+							<td context="Time">
+								<%=time%>
+							</td>
+							<td>
+								<button type="button" action="Stop" class="btn btn-danger hidden" >Stop</button>
+								<button type="button" action="Start" class="btn btn-primary">Start</button>
+							</td>
+						</script>
+					</table>
+					<div class="panel-footer" context="AddForm">
+							
+						<div class="row hidden" context="Form">
+							<div class="col-xs-8">
+								<div class="form-group">
+								<label class="sr-only" for="projectName">Project Name</label>
+								<input type="email" class="form-control" id="projectName" placeholder="Enter Projectname">
+								</div>
+							</div>
+							<div class="col-xs-4"><button type="button" class="btn btn-default" action="CancelAdd">Cancel</button>
+								<button type="button" class="btn btn-default" action="AddProject">Add</button>
+							</div>
+						</div>
+						
+						
+						<button type="button" class="btn btn-default" action="ShowForm">Add New Project</button>
+					</div>
+				</div>
+			</div>
+		</div><script src="../../js/libs/require-2.1.8.js" data-main="../../js/main.js" type="text/javascript">
+</script>
+	</body>
+</html>
