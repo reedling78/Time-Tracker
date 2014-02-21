@@ -23,9 +23,8 @@
                 chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
                     if (request.msg == "tick" && 
                         request.projectname == thiz.model.get('projectname')){
-                        console.log(request);
                         thiz.$time.text(request.time);
-                        App.Views.TimerDisplay.model.set('time', request.time);
+                        App.Views.ViewController.model.set('time', request.time);
                     }
                 });
 

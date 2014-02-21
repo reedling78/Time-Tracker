@@ -2,7 +2,7 @@
 	'use strict';
 	define(['backbone'], function(Backbone) {
 		return Backbone.View.extend({
-			el: $('[context="TimerDisplay"]'),
+			el: $('body'),
 
 			initialize: function() {
 				var thiz = this;
@@ -19,7 +19,8 @@
 			},
 
 			events: {
-				'click button[context="ToggleTimer"]': 'toggleTimer'
+				'click button[context="ToggleTimer"]': 'toggleTimer',
+				'click a[action="OpenDataPage"]': 'openDataPage'
 			},
 
 			setHeader: function(){
@@ -28,6 +29,13 @@
 
 			setTimer: function(){
 				this.$timer.text(this.model.get('time'));
+			},
+
+			openDataPage:function(){
+				chrome.tabs.create({'url': chrome.extension.getURL('src/data_page/datapage.html')}, function(tab) {
+					// Tab opened.
+				});
+				return false;
 			}
 
 		});

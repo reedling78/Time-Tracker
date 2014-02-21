@@ -2,7 +2,8 @@
   "name": "PE Time Tracker",
   "options_page": "src/option/option.html",
   "permissions": [
-    "storage"
+    "storage",
+    "tabs"
   ],
   "version": "0.0.1",
   "manifest_version": 2,

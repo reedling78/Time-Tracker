@@ -34,8 +34,8 @@
                 
                 newCurrent.set('isTimeing', true);
 
-                App.Views.TimerDisplay.model = newCurrent;
-                App.Views.TimerDisplay.update(); // sad i can't listen for this model save
+                App.Views.ViewController.model = newCurrent;
+                App.Views.ViewController.update(); // sad i can't listen for this model save
                 App.projectTable.render();
             }
 

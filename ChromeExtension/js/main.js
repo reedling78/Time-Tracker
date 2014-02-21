@@ -45,8 +45,8 @@
     });
 
     require(['models/session', 'models/project', 'collections/projects', 'views/addform', 
-        'views/projecttable', 'views/timerdisplay'],
-        function(Session, Project, Projects, AddForm, ProjectTable, TimerDisplay) {
+        'views/projecttable', 'views/viewcontroller'],
+        function(Session, Project, Projects, AddForm, ProjectTable, ViewController) {
         
         window.App = {
             Models: {
@@ -57,7 +57,7 @@
             },
             Views: {
                 AddForm: new AddForm(),
-                TimerDisplay: new TimerDisplay({
+                ViewController: new ViewController({
                     model: new Project()
                 })
             }
