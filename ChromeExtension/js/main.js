@@ -1,8 +1,10 @@
 /*global $, require, io*/
-    
+
 
 (function() {
     'use strict';
+
+    var bodyID = document.querySelectorAll('body')[0].getAttribute('id');
 
     require.config({
         baseUrl: '/js',
@@ -44,30 +46,56 @@
         }
     });
 
-    require(['models/session', 'models/project', 'collections/projects', 'views/addform', 
-        'views/projecttable', 'views/viewcontroller'],
-        function(Session, Project, Projects, AddForm, ProjectTable, ViewController) {
-        
-        window.App = {
-            Models: {
-                Session: new Session(),
-            },
-            Collections: {
-                Projects: new Projects()
-            },
-            Views: {
-                AddForm: new AddForm(),
-                ViewController: new ViewController({
-                    model: new Project()
-                })
-            }
-        };
+    if (bodyID == 'BrowserAction') {
+        require(['models/session', 'models/project', 'collections/projects', 'views/addform',
+                'views/projecttable', 'views/viewcontroller'
+            ],
+            function(Session, Project, Projects, AddForm, ProjectTable, ViewController) {
 
-        App.Views.ProjectTable = new ProjectTable({
-            collection: App.Collections.Projects
+                window.App = {
+                    Models: {
+                        Session: new Session(),
+                    },
+                    Collections: {
+                        Projects: new Projects()
+                    },
+                    Views: {
+                        AddForm: new AddForm(),
+                        ViewController: new ViewController({
+                            model: new Project()
+                        })
+                    }
+                };
+
+                App.Views.ProjectTable = new ProjectTable({
+                    collection: App.Collections.Projects
+                });
+
+            });
+    } else if (bodyID == 'BackgroundPage') {
+        require(['collections/projects', 'modules/timer'], function(Projects, Timer) {
+
+            window.App = {
+                Collections: {
+                    Projects: new Projects()
+                }
+            };
+
+            chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
+                if (request.msg == "activeChanged") {
+                    App.Collections.Projects = new Projects();
+                    Timer.changed();
+
+                    sendResponse({
+                        msg: "change timer"
+                    });
+                }
+            });
+            Timer.changed();
+
         });
-;
+    }
 
-    });
+
 
 }());

@@ -68,10 +68,7 @@
                 App.Models.Session.set('activeRow', this);
                 App.Collections.Projects.trigger('add');
 
-                chrome.runtime.sendMessage({
-                    msg: "activeChanged"
-                });
-
+                chrome.runtime.sendMessage({msg: "activeChanged"});
             },
 
             
