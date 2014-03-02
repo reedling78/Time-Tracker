@@ -1,69 +1,45 @@
 (function() {
     'use strict';
-    define(['backbone', 'modules/helpers'], function(Backbone, Helpers, Projects, Project) {
+    define(['backbone', 'modules/helpers', 'moment'], function(Backbone, Helpers, moment) {
         var timer;
         var currentProject;
 
-        function start() {
-            var project = currentProject;
+        function elapse(time1, time2){
+            var obj = {d: 0,h: 0,m: 0,s: 0};
+            var past, future;
+            time1 = moment(time1).startOf('second');
+            time2 = moment(time2).startOf('second');
 
-            var s = project.get('s') || 0,
-                m = project.get('m') || 0,
-                h = project.get('h') || 0;
-
-            timer = setInterval(function() {
-                myTimer();
-            }, 1000);
-
-            function myTimer() {
-                s++;
-
-                if (s == 60) {
-                    s = 0;
-                    m++;
-                }
-
-                if (m == 60) {
-                    m = 0;
-                    h++;
-                }
-
-                project.set('s', s);
-                project.set('m', m);
-                project.set('h', h);
-
-                chrome.browserAction.setBadgeText({
-                    text: Helpers.badgeTime(project)
-                });
-
-                chrome.runtime.sendMessage({
-                    msg: "tick",
-                    projectname: project.get('projectname'),
-                    time: Helpers.formatTime(project)
-                });
-
-                App.Collections.Projects.trigger('add');
+            if(!time1.isValid() || !time2.isValid()){
+                return obj;
             }
-        }
 
-        function changed() {
-            var lsData;
-            clearInterval(timer);
+            if(time1.isBefore(time2)){
+                past = time2;
+                future = time1;
+            } else {
+                past = time1;
+                future = time2;
+            }
 
-            //TODO this should be changed to a backbone where instead of a loop
-            App.Collections.Projects.each(function(project){
-                if(project.get('isActive')){
-                    currentProject = project;
-                    start();
-                }
-                
-            });
+            obj.d = past.diff(future, 'days');
+            obj.h = past.diff(future, 'hours');
+            obj.m = past.diff(future, 'minutes');
+            obj.s = past.diff(future, 'seconds');
+
+            var totalh = past.diff(future, 'hours');
+            var totalm = past.diff(future, 'minutes');
+
+            obj.h = (obj.h-(obj.d*24) != -1)?obj.h-(obj.d*24)  : 0;
+            obj.m = obj.m-(totalh*60);
+            obj.s = obj.s-(totalm*60);
+
+            return obj;
         }
 
         return {
-            changed: changed
+            elapse: elapse
         };
-
 
     });
 })();

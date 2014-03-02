@@ -1,6 +1,6 @@
 (function() {
     'use strict';
-    define(['backbone', 'modules/helpers'], function(Backbone, Helpers) {
+    define(['backbone', 'modules/helpers', 'modules/timer'], function(Backbone, Helpers, Timer) {
 
         return Backbone.View.extend({
             tagName: 'tr',
@@ -13,24 +13,17 @@
 
             render: function () {
                 var thiz = this;
-                this.model.set('time', Helpers.formatTime(this.model));
+                this.model.set('time', this.model.getTotalTimeFormated());
                 this.$el.html(this.template(this.model.toJSON()));
 
                 this.$time = this.$('[context="Time"]');
                 this.$startbtn = this.$('[action="Start"]');
                 this.$stopbtn = this.$('[action="Stop"]');
 
-                chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
-                    if (request.msg == "tick" && 
-                        request.projectname == thiz.model.get('projectname')){
-                        thiz.$time.text(request.time);
-                        App.Views.ViewController.model.set('time', request.time);
-                    }
-                });
-
-                if(this.model.get('isActive')){
+                if(this.model.get('startTime') != 'off'){
                     this.$startbtn.addClass('hidden');
                     this.$stopbtn.removeClass('hidden');
+                    App.Models.Session.set('activeRow', this);
                 }
 
                 this.on('stop', function(){
@@ -41,34 +34,40 @@
             },
 
             stopTimer: function(e){
+                clearInterval(this._timer);
                 this.$startbtn.toggleClass('hidden');
                 this.$stopbtn.toggleClass('hidden');
                 this.$el.removeClass('danger');
 
-                this.model.set('isActive', false);
+                this.model.setTotalTime();
+                App.Models.Session.unset('activeRow');
                 App.Collections.Projects.trigger('add');
-
-                chrome.runtime.sendMessage({msg: "activeChanged"});
+                
             },
 
             startTimer: function(){
-                
+                var thiz = this;
                 this.$startbtn.toggleClass('hidden');
                 this.$stopbtn.toggleClass('hidden');
                 this.$el.addClass('danger');
-
-                this.model.set('isActive', true);
 
                 //clear last project being timed
                 if(App.Models.Session.get('activeRow') !== undefined){
                     var currentlyRunning = App.Models.Session.get('activeRow');
                     currentlyRunning.trigger('stop');
                 }
-                
+
+                this.model.set('startTime', new Date());
                 App.Models.Session.set('activeRow', this);
                 App.Collections.Projects.trigger('add');
 
-                chrome.runtime.sendMessage({msg: "activeChanged"});
+                thiz._timer = setInterval(function() {
+                    myTimer();
+                }, 1000);
+
+                function myTimer() {
+                    thiz.$time.text(thiz.model.getTotalTimeFormated());
+                }
             },
 
             

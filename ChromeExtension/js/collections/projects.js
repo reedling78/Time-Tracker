@@ -1,6 +1,6 @@
 (function() {
     'use strict';
-    define(['backbone'], function(Backbone) {
+    define(['backbone', 'models/Project'], function(Backbone, Project) {
         return Backbone.Collection.extend({
             initialize: function(){
                 var thiz = this;
@@ -10,15 +10,23 @@
                         thiz.todaysDateString(),
                         JSON.stringify(thiz.toJSON())
                     );
+                    console.log(thiz.toJSON());
                 });
 
+                //If a localstorage var has been created for today.
                 if(localStorage.hasOwnProperty(thiz.todaysDateString())) {
                     var lsData = JSON.parse(localStorage.getItem(this.todaysDateString()));
 
                     for (var i = 0; i < lsData.length; i++) {
-                        thiz.add(lsData[i] ,{ silent: true });
+                        if(lsData[i].startTime !== 'off'){
+                            lsData[i].startTime = new Date(lsData[i].startTime);
+                        }
+                        thiz.add(new Project(lsData[i]) ,{ silent: true });
                     }
                 }
+
+
+                this.trigger('add');
 
             },
             todaysDateString: function(){

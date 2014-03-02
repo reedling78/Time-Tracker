@@ -6,7 +6,6 @@
 			el: $('[context="AddForm"]'),
 
 			initialize: function() {
-				console.log('Add Form View Initialized');
 				this.$form = this.$('[context="Form"]');
 				this.$inputprojectname = this.$('#projectName');
 				this.$addprojectbtn = this.$('[action="ShowForm"]');
@@ -40,8 +39,6 @@
 				var project = new Project({
 					projectname: this.$inputprojectname.val()
 				});
-
-				
 
 				App.Views.ProjectTable.$el.append(new ProjectTableRow({
 					model : project

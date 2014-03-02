@@ -1,0 +1,84 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <title>Jasmine Spec Runner v2.0.0</title>
+
+  <link rel="shortcut icon" type="image/png" href="lib/jasmine-2.0.0/jasmine_favicon.png">
+  <link rel="stylesheet" type="text/css" href="lib/jasmine-2.0.0/jasmine.css">
+
+  <script type="text/javascript" src="lib/jasmine-2.0.0/jasmine.js"></script>
+  <script type="text/javascript" src="lib/jasmine-2.0.0/jasmine-html.js"></script>
+  <script type="text/javascript" src="lib/jasmine-2.0.0/boot.js"></script>
+
+  <script type="text/javascript" src="../js/libs/require-2.1.8.js" ></script>
+
+
+
+<script>
+
+(function() {
+    'use strict';
+
+    require.config({
+        baseUrl: '../js/',
+        packages: [{
+            name: "jquery",
+            location: "./libs",
+            main: "jquery-1.10.1"
+        }, {
+            name: "backbone",
+            location: "./libs",
+            main: "backbone-1.0"
+        }, {
+            name: "underscore",
+            location: "./libs",
+            main: "underscore-1.5.1"
+        }, {
+            name: "bootstrap",
+            location: "./libs",
+            main: "bootstrap-3.0.2/bootstrap"
+        }, {
+            name: "moment",
+            location: "./libs",
+            main: "moment-2.5.1"
+        }],
+        shim: {
+            'backbone': {
+                deps: ['underscore', 'jquery'],
+                exports: 'Backbone'
+            },
+            'underscore': {
+                exports: '_'
+            },
+            'jquery.ui': {
+                deps: ['jquery'],
+            },
+            'bootstrap': {
+                deps: ['jquery'],
+            }
+        }
+    });
+
+    
+    require([
+        '../tests/spec/HelpersSpec', 
+        '../tests/spec/TimerSpec',
+        '../tests/spec/ProjectSpec'], function() {
+    	jasmine.getEnv().execute();
+    });
+
+
+
+
+}());
+
+
+  </script>
+
+
+</head>
+
+<body>
+</body>
+</html>

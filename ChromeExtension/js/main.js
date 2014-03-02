@@ -28,6 +28,10 @@
             name: "localstorage",
             location: "./libs",
             main: "backbone.localstorage-1.1.7"
+        }, {
+            name: "moment",
+            location: "./libs",
+            main: "moment-2.5.1"
         }],
         shim: {
             'backbone': {
@@ -73,27 +77,28 @@
 
             });
     } else if (bodyID == 'BackgroundPage') {
-        require(['collections/projects', 'modules/timer'], function(Projects, Timer) {
+        // require(['collections/projects', 'modules/timer'], function(Projects, Timer) {
 
-            window.App = {
-                Collections: {
-                    Projects: new Projects()
-                }
-            };
+        //     window.App = {
+        //         Collections: {
+        //             Projects: new Projects()
+        //         }
+        //     };
 
-            chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
-                if (request.msg == "activeChanged") {
-                    App.Collections.Projects = new Projects();
-                    Timer.changed();
+        //     chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
+        //         console.log(request.msg);
+        //         if (request.msg == "activeChanged") {
+        //             App.Collections.Projects = new Projects();
+        //             Timer.changed();
 
-                    sendResponse({
-                        msg: "change timer"
-                    });
-                }
-            });
-            Timer.changed();
+        //             sendResponse({
+        //                 msg: "change timer"
+        //             });
+        //         }
+        //     });
+        //     Timer.changed();
 
-        });
+        // });
     }
 
 
